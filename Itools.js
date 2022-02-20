@@ -1,4 +1,0 @@
-(()=>{
-  // this is JS Tools
-
-})();
