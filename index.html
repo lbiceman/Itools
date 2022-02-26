@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        ::selection {
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .container {
+            background-color: #000;
+            font-size: 50px;
+            color: #fff;
+        }
+        .title {
+            background-color: #bbb;
+        }
+        .btn {
+            padding: 5px 15px;
+            border-radius: 5px;
+            background-color: #34d190;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        Itools
+        <div class="title"></div>
+        <div>
+            <span class="btn" id="throttle">throttle</span>
+            <span class="btn" id="debounce">debounce</span>
+        </div>
+    </div>
+    <script src="./Itools.js"></script>
+    <script>
+        (() => {
+            let title = document.querySelector(".title");
+            let throttle = document.getElementById("throttle");
+            let debounce = document.getElementById("debounce");
+            let itools = new Itools();
+            let time = new itools.Idate(new Date(), "HH:mm:ss:SSS yyyy-MM-dd");
+            title.innerHTML = time.getFmtTime("yyyy-MM-dd HH:mm:ss:SSS")
+            let list = [
+                {a: 1, b: 2},
+                {c: 1, d: 2, e: 3, child: [
+                    {h: 1, i: 2, child: [
+                        {j: 1, k: 2, child: [
+                            {j: 1, k: 2}
+                        ]}
+                    ], l: 1, m: 2}
+                ], f: 1, g: 2},
+                {p: 1, q: 2}
+            ];
+            let list1 = [1, 2, 3, 4, 5, 6, [7, 8, 9, [10, 11, 12, 13], 14, 15], 16, 17];
+            let list3 = [1, 2, 3, 3, 2, 1, 3, 2, 1];
+            let list4 = [{name: "xiaoming"}, {name: "xiaogang"}, {name: "xiaohong"}, {name: "xiaogang"}];
+            let listFlatRes = itools.flat(list, "child");
+            console.log(listFlatRes);
+            let uniqRes = itools.uniq(list4, "name");
+            console.log(uniqRes);
+            itools.extend({
+                random: function(a) {
+                    return Math.random()
+                }
+            });
+            itools.name = "xiaoming";
+            let obj = {
+                name: "zhangsan",
+                age: 40,
+                arr: [1, 2, 3, [4, 5, 6, [7, 8, 0, [10, [11, [666]]]]]],
+                son: {
+                    name: "hututu",
+                    age: 18,
+                    arr: [1, 2, [3, 4], [5, 6], [7, 8, [9, 19]]],
+                    address: "fandoudajie",
+                    son: {
+                        name: "wangtutu",
+                        age: 10,
+                        address: "XXX18"
+                    }
+                },
+                ses: 1,
+                address: "fandouhuayuan"
+            };
+            let newList1 = itools.clone(obj, {});
+            let tree = {
+                name: "总行",
+                id: 1,
+                children: [
+                    {name: "北京分行", id: 2, children: [
+                        {name: "丰台区分行", id: 21},
+                        {name: "朝阳区分行", id: 22},
+                        {name: "昌平区分行", id: 23},
+                    ]},
+                    {name: "上海分行", id: 3},
+                    {name: "广东分行", id: 4},
+                    {name: "广西分行", id: 5},
+                    {name: "河南分行", id: 6, children: [
+                        {name: "郑州分行", id: 61},
+                        {name: "许昌分行", id: 62, children: [
+                            {name: "禹州支行", id: 621},
+                            {name: "长葛支行", id: 622},
+                            {name: "魏武区支行", id: 623},
+                        ]},
+                        {name: "新郑分行", id: 63},
+                        {name: "新密分行", id: 64},
+                        {name: "漯河分行", id: 65},
+                    ]},
+                    {name: "河北分行", id: 7},
+                    {name: "山西分行", id: 8}
+                ]
+            };
+            console.log(itools.getRangeRandom(50, 100));
+            console.log(itools.equals(obj, {
+                name: "小明",
+                age: 40,
+                arr: [1, 2, 3, [4, 5, 6, [7, 8, 9, [10, [11]]]]],
+                son: {
+                    name: "小嘎",
+                    age: 18,
+                    arr: [1, 2, [3, 4], [5, 6], [7, 8, [9, 19]]]
+                }
+            }));
+            console.log(itools.has(obj, "XXX18"));
+            console.log(itools.createRange(0, 20, 2));
+            console.log(itools.orderBy([32,4,32,4,32,4,,32,4,32,4,32,4,,321,5,4,6,,76,587,6,8], "desc"));
+            console.log(itools.orderBy(["a", "ca", "g", "c", "b", "x", "z", "p", "ps", "AA", "c", "f", "k"]));
+            console.log(itools.findTree(tree, "children", item => item.id == 623));
+            console.log(itools.findTree2(tree, "children", item => item.id == 623));
+            function clickFn(msg) {
+                let time = new itools.Idate(new Date(), "yyyy-MM-dd HH:mm:ss:SSS").getFmtTime();
+                title.innerHTML = time;
+                console.log(msg);
+            }
+            throttle.onclick = itools.throttle(() => clickFn("throttle"), 2000);
+            debounce.onclick = itools.debounce(() => clickFn("debounce"), 2000, true);
+        })();
+    </script>
+</body>
+</html>
