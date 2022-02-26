@@ -1,2 +1,2 @@
 # Itools
-JS tools
+常用的JS函数库
