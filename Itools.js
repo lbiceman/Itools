@@ -1,7 +1,7 @@
 (function(global, func) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = func :
         typeof define === 'function' && define.amd ? define(func()) :
-        (global = global || self, global.Itools = func());
+        (global = global || self, global.itools = func());
 })(this, function() {
 
 
@@ -16,14 +16,9 @@
     let isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
     let isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
     let isFirefox = UA && UA.match(/firefox\/(\d+)/);
-  
-
 
     // 排序数组
     let letterSortOrder = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7, i: 8, j: 9, k: 10, l: 11, m: 12, n: 13, o: 14, p: 15, q: 16, r: 17, s: 18, t: 19, u: 20, v: 21, w: 22, x: 23, y: 24, z: 15};
-
-    let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    
 
     // 时间正则
     let fmtTimeReg = /d{1,2}|M{1,2}|yy(?:yy)?|S{1,3}|([HhMsDm])\1?/g;
@@ -379,6 +374,21 @@
             }
             return false;
         },
+        // 合并
+        merge(target) {
+            for (let i = 1, j = arguments.length; i < j; i++) {
+                let source = arguments[i] || {};
+                for (let prop in source) {
+                    if (source.hasOwnProperty(prop)) {
+                        let value = source[prop];
+                        if (value !== undefined) {
+                            target[prop] = value;
+                        }
+                    }
+                }
+            }
+            return target
+        },
         // 从属性结构查找某个节点 广度
         // 目前建议使用下边的深度算法
         findTree2(tree, child, callback) {
@@ -422,7 +432,7 @@
             let num = 0;
             for(let i = 0; i < list.length; i++) {
                 if(!this.isNum(list[i])) {
-                    error("is not num");
+                    error("not a num");
                     return;
                 }
                 num += list[i];
@@ -435,6 +445,7 @@
             return num / list.length;
         },
         // 排序
+        // 快速
         orderBy(list, order) {
             // order    asc   1 -> 99    desc  99 -> 1
             order = order || "asc";
@@ -506,7 +517,7 @@
             obj = obj || {};
             for(let key in obj) {
                 if(this.hasOwnProperty(key)) {
-                    error("'" + key + "' hax already been declared");
+                    error("'" + key + "' has already been declared");
                     continue;
                 }
                 if(this.getType(obj[key] == "Function")) {
@@ -516,5 +527,5 @@
         }
     }
 
-    return Itools;
+    return new Itools();
 })
