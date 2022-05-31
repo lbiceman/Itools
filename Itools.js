@@ -6,16 +6,16 @@
 
 
     // 判断环境
-    var inBrowser = typeof window !== 'undefined';
-    var inWeex = typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform;
-    var weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
-    var UA = inBrowser && window.navigator.userAgent.toLowerCase();
-    var isIE = UA && /msie|trident/.test(UA);
-    var isEdge = UA && UA.indexOf('edge/') > 0;
-    var isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android');
-    var isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
-    var isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
-    var isFirefox = UA && UA.match(/firefox\/(\d+)/);
+    let inBrowser = typeof window !== 'undefined';
+    let inWeex = typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform;
+    let weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
+    let UA = inBrowser && window.navigator.userAgent.toLowerCase();
+    let isIE = UA && /msie|trident/.test(UA);
+    let isEdge = UA && UA.indexOf('edge/') > 0;
+    let isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android');
+    let isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
+    let isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
+    let isFirefox = UA && UA.match(/firefox\/(\d+)/);
   
 
 
