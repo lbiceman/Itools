@@ -21,6 +21,8 @@
 
     // 排序数组
     let letterSortOrder = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7, i: 8, j: 9, k: 10, l: 11, m: 12, n: 13, o: 14, p: 15, q: 16, r: 17, s: 18, t: 19, u: 20, v: 21, w: 22, x: 23, y: 24, z: 15};
+
+    let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     
 
     // 时间正则
@@ -68,7 +70,7 @@
     // D 周     d 日     M月    m分     y年     h 12进制小时   H 24进制小时  s 秒  S 毫秒
     let fmtDateFlags = {
         D: function(date) {
-            return date.getDy() + "";
+            return date.getDay() + "";
         },
         DD: function(date) {
             return completion(date.getDay())
@@ -127,18 +129,21 @@
         }
     }
 
-    function Idate(date, format) {
-        if(Itools.prototype.getType(date) !== "Date" || isNaN(date.getTime())) {
-            throw new Error("not type")
-        }
+    function Idate(date, dateFormat) {
+        if(date && Itools.prototype.getType(new Date(date)) !== "Date") throw new Error("not type")
+
         this._date = date || "";
-        this.format = format || "yyyy-MM-dd hh:mm:ss";
-        this.date = new Date(this._date);
+        this.dateFormat = dateFormat || "yyyy-MM-dd hh:mm:ss";
+        this.date = date ? new Date(this._date) : new Date();
+    }
+
+    function idate(date, dateFormat) {
+        return new Idate(date, dateFormat)
     }
 
     Idate.prototype = {
         // 获取毫秒数
-        getTime() {
+        valueOf() {
             return this.date.getTime()
         },
 
@@ -165,7 +170,8 @@
 
         // 获取周几
         getWeek() {
-            return fmtDateFlags.DD(this.date)
+            // 返回字符串  0 1 2...
+            return fmtDateFlags.D(this.date)
         },
 
         // 获取月
@@ -189,14 +195,14 @@
         },
 
         // 获取当前计算机时间
-        now(format) {
-            return new Idate(new Date(), format || this.format).getFmtTime()
+        now(dateFormat) {
+            return new Idate(new Date(), dateFormat || this.dateFormat).format()
         },
 
         // 获取格式化之后的时间
-        getFmtTime(format) {
+        format(dateFormat) {
             let that = this;
-            let fmt = format || this.format;
+            let fmt = dateFormat || this.dateFormat;
             return fmt.replace(fmtTimeReg, function(curr) {
                 return fmtDateFlags[curr](that.date)
             })
@@ -207,13 +213,14 @@
         this.version = "Itools version: 0.0.1";
         this.autor = {
             emil: "lbiceman@126.com",
-            name: "iceman",
-            github: "https://XXXX"
+            name: "lbiceman",
+            github: "https://github.com/lbiceman/Itools"
         }
     }
 
     Itools.prototype = {
-        Idate,
+        // Idate,
+        idate,
         browser() {
             return {
                 inBrowser,
@@ -337,7 +344,7 @@
                     if(quoteTypes.includes(this.getType(el))) {
                         if(this.isArr(el)) newObj[key] = new Array();
                         else if(this.isObj(el)) newObj[key] = new Object();
-                        else if(this.getType(el) == "Functiojn") newObj[key] = el;
+                        else if(this.getType(el) == "Function") newObj[key] = el;
                         this.clone(el, newObj[key])
                     }
                 }
@@ -412,8 +419,12 @@
         },
         // 求和
         sum(list) {
-            let num = 0; 
+            let num = 0;
             for(let i = 0; i < list.length; i++) {
+                if(!this.isNum(list[i])) {
+                    error("is not num");
+                    return;
+                }
                 num += list[i];
             }
             return num;
@@ -494,7 +505,7 @@
         extend(obj) {
             obj = obj || {};
             for(let key in obj) {
-                if(Itools.prototype.hasOwnProperty(key)) {
+                if(this.hasOwnProperty(key)) {
                     error("'" + key + "' hax already been declared");
                     continue;
                 }

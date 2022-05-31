@@ -48,8 +48,8 @@
             let throttle = document.getElementById("throttle");
             let debounce = document.getElementById("debounce");
             let itools = new Itools();
-            let time = new itools.Idate(new Date(), "HH:mm:ss:SSS yyyy-MM-dd");
-            title.innerHTML = time.getFmtTime("yyyy-MM-dd HH:mm:ss:SSS")
+            console.log(itools.idate("2022/05/31").getWeek());
+            title.innerHTML = itools.idate().format("yyyy-MM-dd HH:mm:ss:SSS")
             let list = [
                 {a: 1, b: 2},
                 {c: 1, d: 2, e: 3, child: [
