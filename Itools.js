@@ -1,5 +1,5 @@
 (function(global, func) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = func :
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = func() :
         typeof define === 'function' && define.amd ? define(func()) :
         (global = global || self, global.itools = func());
 })(this, function() {
