@@ -329,20 +329,16 @@
         flat: (list, variate) => flat([], list, variate),
         // 深度克隆
         clone(obj, newObj) {
-            if(!quoteTypes.includes(this.getType(obj))) return
-            if(!(obj == undefined) || (obj == null)) {
-                if(this.getObjKeysSize(obj) === 0) return obj instanceof Array ? [] : {};
-            } else return
+            if(!obj) return obj;
+            if(!quoteTypes.includes(this.getType(obj))) return obj;
             for(let key in obj) {
-                if(obj.hasOwnProperty(key)) {
-                    let el = obj[key];
-                    if(quoteTypes.includes(this.getType(el))) {
-                        if(this.isArr(el)) newObj[key] = new Array();
-                        else if(this.isObj(el)) newObj[key] = new Object();
-                        else if(this.getType(el) == "Function") newObj[key] = el;
-                        this.clone(el, newObj[key])
-                    }
-                }
+                let el = obj[key];
+                if(quoteTypes.includes(this.getType(el))) {
+                    if(this.isArr(el)) newObj[key] = []
+                    else if(this.isObj(el)) newObj[key] = {};
+                    else if(this.getType(el) == "Function") newObj[key] = el;
+                    this.clone(el, newObj[key])
+                } else newObj[key] = el
             }
             return newObj
         },
